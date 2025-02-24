@@ -1,13 +1,12 @@
 # Docker Security
 
-Контейнеризация уверенно заняла свое место в мире DevOps. Однако безопасность Docker-контейнеров остается актуальной проблемой. И далеко не каждый инженер знает как правильно и безопасно готовить, поставлять, развертывать и следить за контейнерами в рантайме.  Сейчас копнем чуть глубже и разберемся как харденить Docker, но сначала вот вопрос: рут в контейнере и рут на хосте - это тот же рут или нет? А чем отличается и отличается ли? Если ты задумался, то тебе сюда.
+Контейнеризация уверенно заняла свое место в мире DevOps. Однако безопасность Docker-контейнеров остается актуальной проблемой. И далеко не каждый инженер знает как правильно и безопасно готовить, поставлять, развертывать и следить за контейнерами в рантайме. Сейчас копнем чуть глубже и разберемся как харденить Docker, но сначала вот вопрос: рут в контейнере и рут на хосте - это тот же рут или нет? А чем отличается и отличается ли? Если ты задумался, то тебе сюда.
 
 <добавить агенду>
 
 ## Изоляция
 
-Контейнеризация - это не виртуализация. Контейнер - это просто обычный процесс, который запускается в изолированной среде, но это не какая-то отдельная изолированная среда. Процесс в контейнере - это процесс на хосте, который изолирован с помощью стандартных механизмов в Linux: cgroups2, namespaces и системный вызов [pivot root](https://tbhaxor.com/pivot-root-vs-chroot-for-containers/) (который пришел на смену chroot, как более надежный).\
-
+Контейнеризация - это не виртуализация. Контейнер - это просто обычный процесс, который запускается в изолированной среде, но это не какая-то отдельная изолированная среда. Процесс в контейнере - это процесс на хосте, который изолирован с помощью стандартных механизмов в Linux: cgroups2, namespaces и системный вызов [pivot root](https://tbhaxor.com/pivot-root-vs-chroot-for-containers/) (который пришел на смену chroot, как более надежный).\\
 
 Что ж начнем с изоляции и рассмотрим несколько поучительных примеров.
 
@@ -38,8 +37,7 @@
 Видим, что root на хосте мощнее. Оказывается Docker при запуске контейнера отобрал часть Capabilities, чтобы сделать процесс в контейнере более безопасным. В этом примере мы видим, что есть нетривиальные вещи о которых по-хорошему нужно знать.
 
 \
-TODO Пример с видимостью процесса в контейнере с хоста\
-
+TODO Пример с видимостью процесса в контейнере с хоста\\
 
 <figure><img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXet7NVtpZLmmuohuy_Acq32Sr-3UobvxhGm3a8ZhD-VecFt8Daiwo57krZoywHHIxdla5QF5VOvAWje_BaCUNXMPpD3Q850jE60HQnwUWBXwyWkADKgzri3j5uLoSyvHud4ccVvgA?key=o4n_CvAEFOAedWxOCWnj3EN0" alt=""><figcaption></figcaption></figure>
 
@@ -57,8 +55,7 @@ read-only filesystem icc, network, remapping UID\
 
 [https://github.com/docker/docker-bench-security](https://github.com/docker/docker-bench-security)
 
-\
-
+\\
 
 Не всему в CIS можно верить
 
@@ -70,6 +67,8 @@ read-only filesystem icc, network, remapping UID\
 
 ## Статика
 
+Какой базовый образ выбрать?
+
 Cборка образа: DIND, Jib,Kaniko, BuildX, multi stage images
 
 Инструменты: Crane, Trivy, Dockly, Chechov\
@@ -78,8 +77,7 @@ Jib/Kaniko
 
 Для сокращения поверхности атаки в раннерах, вместо DIND можно использовать утилиты и плагины для сборки контейнеров или в крайнем случае rootless DIND
 
-\
-
+\\
 
 * Buildx
 
@@ -87,18 +85,16 @@ Jib/Kaniko
 
 В новых версиях buildx - уже используется по умолчанию
 
-Новый инструмент сборки, рассказать про SBOM, метаданные сборки и мультиплатформенность, [provenance attestation](https://docs.docker.com/build/attestations/slsa-provenance/),  etc
+Новый инструмент сборки, рассказать про SBOM, метаданные сборки и мультиплатформенность, [provenance attestation](https://docs.docker.com/build/attestations/slsa-provenance/), etc
 
-\
-
+\\
 
 * Рассказать про distroless образы.\
   \
   Рассказать про Scanning images tools, например Trivy. Рассказать немного про практики, например, про то, что образы надо сканировать не только на этапе CI/CD. Очень важно фоново сканировать репозиторий образов, т.к. могли обнаружить новые уязвимости и важно их пофиксить у себя на проде, в образе, который уже когда-то прошел CI
 
 Для уменьшения вероятности LotL attack (Living off the Land), стоит включать в образы только самый минимум, рассказать про FROM SCRATCH\
-\
-
+\\
 
 Рантайм\
 \
@@ -106,14 +102,13 @@ Docker compose
 --------------
 
 Не используйте docker-compose, написанный на Python, используйте нативную команду\
-\
-
+\\
 
 Ремаппинг UID, пример побега из контейнера без ремаппинга\
 Kubernetes vs Swarm
 
 Альтернативные рантаймы:\
-Интересные решения просто для расширения майндсета&#x20;
+Интересные решения просто для расширения майндсета
 
 Gvisor https://gvisor.dev/
 
@@ -122,38 +117,29 @@ Gvisor https://gvisor.dev/
 Falco, …
 
 \
-\
-
+\\
 
 ### Черновик:
 
-\
+\\
 
+* \\
 
-&#x20;
-
-* \
-
-
-\
-
+\\
 
 * Настройка гранулярных прав в Докер
 
 https://docs.docker.com/engine/extend/plugins\_authorization/
 
-\
-
+\\
 
 * Утилиты для анализа аномалий в рантайме контейнеров, например Falco
 
-\
-
+\\
 
 * Утилиты для анализа слоев образа
 
-\
-
+\\
 
 Добавить в книгу полезные ресурсы:
 
@@ -173,7 +159,7 @@ https://docs.docker.com/engine/extend/plugins\_authorization/
 #### 2 Какая директива в Dockerfile безопаснее?
 
 1. COPY
-2. ADD&#x20;
+2. ADD
 3. COPY\_ON\_WRITE
 
 #### 3 Какого бита для настройки прав не существует?
@@ -195,8 +181,7 @@ https://docs.docker.com/engine/extend/plugins\_authorization/
 1. да
 2. нет
 
-\
-
+\\
 
 6 Что однозначно идентифицирует образ?
 
@@ -205,8 +190,7 @@ https://docs.docker.com/engine/extend/plugins\_authorization/
 3. hash
 4. это все
 
-\
-
+\\
 
 7 Под кем запустится процесс в контейнере?
 
@@ -228,7 +212,7 @@ privileged
 
 #### 10 Выполнили следующие команды. Какой код выхода из контейнеров будет?![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXcjdUT2yppLWAEhwMjP7gmiGABJWUJaog8rVJNaudMUlC8CdQp6KGx6it46K2encIMcYLBLd-qCz1QzGuSWAMqzbnzfEcMfwgfDB3e-gU56Qk9cC3s4TeNaNr-ACGHRTQy0xwkVgQ?key=o4n_CvAEFOAedWxOCWnj3EN0)
 
-a) test1=0  test2=0
+a) test1=0 test2=0
 
 b) test1=137 test2=137
 
@@ -240,14 +224,13 @@ d) test1=137 test2=0
 
 ![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXcarNL1T9A4hA9KBxb__ukOqhkuu7dljuL5x9mSjnrC2wSoLIcslGqNCqRDji-FOR8KJiPqqN7gYcOvjjV7DzAxb2LdRhVhwnXyotYVs1kdxf110n5BgiCuNF8nnWrFwY_qSUbw?key=o4n_CvAEFOAedWxOCWnj3EN0)
 
-1. docker run -v $(pwd)/secret.txt:/secret.txt alpine cat /secret.txt&#x20;
-2. docker run --privileged  -v $(pwd)/secret.txt:/secret.txt alpine cat /secret.txt
-3. docker run --privileged --userns=host -v $(pwd)/secret.txt:/secret.txt alpine cat /secret.txt&#x20;
+1. docker run -v $(pwd)/secret.txt:/secret.txt alpine cat /secret.txt
+2. docker run --privileged -v $(pwd)/secret.txt:/secret.txt alpine cat /secret.txt
+3. docker run --privileged --userns=host -v $(pwd)/secret.txt:/secret.txt alpine cat /secret.txt
 4. docker run --privileged --userns=host -v /secret.txt:/secret.txt alpine cat /secret.txt
 
-\
-
+\\
 
 ### Почему не Podman?
 
-\
+\\
