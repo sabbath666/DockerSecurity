@@ -6,7 +6,7 @@
 
 ## Изоляция
 
-Контейнеризация - это не виртуализация. Контейнер - это просто обычный процесс, который запускается в изолированной среде, но это не какая-то отдельная изолированная среда. Процесс в контейнере - это процесс на хосте, который изолирован с помощью стандартных механизмов в Linux: cgroups2, namespaces и системный вызов [pivot root](https://tbhaxor.com/pivot-root-vs-chroot-for-containers/) (который пришел на смену chroot, как более надежный).\\
+Контейнеризация - это не виртуализация. Контейнер - это просто обычный процесс, который запускается в изолированной среде, но это не какая-то отдельная виртуальная машина. Процесс в контейнере - это процесс на хосте, который изолирован с помощью стандартных механизмов в Linux: cgroups2, namespaces и системный вызов [pivot root](https://tbhaxor.com/pivot-root-vs-chroot-for-containers/) (который пришел на смену chroot, как более надежный).
 
 Что ж начнем с изоляции и рассмотрим несколько поучительных примеров.
 
@@ -14,7 +14,26 @@
 
 Сравним неймспейсы в хосте и на контейнере:
 
-<figure><img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXdax7Z_5TGBCwHYubUVpY8_WbRenTixR7EdtviJZq9CghIRsTlNiRCEyPr1kUTGxIsVmUEyJ6ByCn_yMjbwcIQi55M79Bgig28cn2HoeQQQOn3AtAOx2Dp4Vseyi7bVFtB06Hc4Dg?key=o4n_CvAEFOAedWxOCWnj3EN0" alt=""><figcaption></figcaption></figure>
+```shell
+ls -l /proc/$$/ns
+```
+
+```shell
+total 0
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 cgroup -> 'cgroup:[4026531835]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 ipc -> 'ipc:[4026531839]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 mnt -> 'mnt:[4026531841]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 net -> 'net:[4026531840]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid -> 'pid:[4026531836]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid_for_children -> 'pid:[4026531836]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time -> 'time:[4026531834]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time_for_children -> 'time:[4026531834]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 user -> 'user:[4026531837]'                 <--- user id на хосте
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 uts -> 'uts:[4026531838]'
+```
+
+
+<figure><img src="/resources/01-host_namespaces.png" alt=""><figcaption></figcaption></figure>
 
 Очень наглядно видно, что почти все id неймспейсов различаются, а USER - нет, т.к пространство UID хоста шарится с контейнером => root на хосте и root в контейнере один и тот же. Давайте убедимся:
 
@@ -66,8 +85,71 @@ read-only filesystem icc, network, remapping UID\
 ## ![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXedkDMk0Cf2YvnyyQ64Ytqe4uH2xTMI3ZdRvYSzETu2WM_fGGwi5pnYZwASNBf0hGXfzE-dhP9-bUlgtj77dE9rLSMTA5JDYDs6BuAURKUrWHLsvAvXEdo1C6_t3hz1qMaHZL-XDw?key=o4n_CvAEFOAedWxOCWnj3EN0)[https://docs.docker.com/config/containers/live-restore/](https://docs.docker.com/config/containers/live-restore/)
 
 ## Статика
+Ве начинается с FROM
+Какой базовый образ выбрать? 
+DockerHub: Official Image, Verified Publisher, Sponsored OSS (spponsored by Docker)
+Кто-нить ананлизирует базовые образы?
+Как собрать base image?
+- из файловой системы
+- из scratch (часть для гошки, раст,...)
+- из iso (rusdacent любит)
 
-Какой базовый образ выбрать?
+### SAST для Dockerfile
+## Hadolint
+
+плюсы:
+- опирается на рекомендации Docker
+- использует ShellCheck для проверки скриптов в RUN (bash скриптов)
+- OSS
+минусы:
+- Haskell
+
+пинить версию - накладные расхды на обновление
+Федулаев исключил Hadolint из своего процесса CI/CD, но испольует как линтер для IDE
+пример с хадолинтом
+тег latest не дает воспроизводимости
+инструкция COPY лучше чем ADD, ADD - плохо, но если нужно у ADD есть инстркция checksum
+есть хаодлинт онлайн
+
+### Semgrep
+- есть отдельная репа с файлами
+- есть плейграунд
+
+### Checkov
+
+### Kics (от Checkmarx)
+
+4 уязвимости от сник
+снику подсунуть докеримадж с закладкой, подменить команду ls, алиасы
+### анализ докер-образов
+docker history, dive
+scopio
+
+### Dockly
+best-practise docker+cis
+
+### Clair +quay
+### Trivy
+много  таргетов
+у триви есть комплаенс - cis benchmark
+а что если бекдор закинуть в тест
+### Grype+Syft почти равно Trivy
+
+cosign для подписи образов
+харбор интегрируеся с косайгном и показывает подписанные образы
+косайн+триви умеют делать аттестацию
+
+подписть dct+notaty
+
+Multystaging -->must have!!!
+
+Docker + ИИ? скан
+### Registry - чужие и свои
+
+
+, Trivy, Dockle, Chechov
+
+
 
 Cборка образа: DIND, Jib,Kaniko, BuildX, multi stage images
 
@@ -234,3 +316,5 @@ d) test1=137 test2=0
 ### Почему не Podman?
 
 \\
+
+Надо ли сканировать образа на вирусы
