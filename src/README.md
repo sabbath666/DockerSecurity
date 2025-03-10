@@ -15,7 +15,9 @@
 Сравним неймспейсы в хосте и на контейнере:
 
 ```shell
-> ls -l /proc/$$/ns
+ ls -l /proc/$$/ns
+```
+```
 total 0
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 cgroup -> 'cgroup:[4026531835]'
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 ipc -> 'ipc:[4026531839]'
@@ -30,7 +32,9 @@ lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 uts -> 'uts:[4026531838]'
 ```
 
 ```shell
-> docker run alpine ls -l /proc/1/ns
+ docker run alpine ls -l /proc/1/ns
+```
+```
 total 0
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 cgroup -> cgroup:[4026533469]
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 ipc -> ipc:[4026533467]
