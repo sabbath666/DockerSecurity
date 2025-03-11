@@ -16,7 +16,7 @@
 Для вывода неймспейсов на хосте выполним: 
 
 ```shell
- ls -l /proc/$$/ns
+ls -l /proc/$$/ns
 ```
 ```
 total 0
@@ -51,7 +51,7 @@ lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 uts -> 'uts:[4026531838]'
 
 Теперь посмотрим неймспейсы в контейнере:
 ```shell
- docker run alpine ls -l /proc/1/ns
+docker run alpine ls -l /proc/1/ns
 ```
 ```
 total 0
@@ -139,7 +139,7 @@ sudo apt-get install libcap2-bin
 ```shell
 capsh --print|grep 'Bounding set'
 ```
-```shell
+```
 Bounding set =cap_chown,cap_dac_override,cap_dac_read_search,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,
 cap_setpcap,cap_linux_immutable,cap_net_bind_service,cap_net_broadcast,cap_net_admin,cap_net_raw,cap_ipc_lock,
 cap_ipc_owner,cap_sys_module,cap_sys_rawio,cap_sys_chroot,cap_sys_ptrace,cap_sys_pacct,cap_sys_admin,cap_sys_boot,
@@ -153,7 +153,7 @@ cap_bpf,cap_checkpoint_restore
 ```shell
 docker run alpine sh -c "apk add -q libcap && capsh --print|grep 'Bounding set'"
 ```
-```shell
+```
 Bounding set =cap_chown,cap_dac_override,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,
 cap_net_bind_service,cap_net_raw,cap_sys_chroot,cap_mknod,cap_audit_write,cap_setfcap
 ```
@@ -171,7 +171,7 @@ docker run -d alpine sleep 1000
 ```shell
 ps aux|grep sleep
 ```
-```shell
+```
 root     1688866  0.1  0.0   1624   768 ?        Ss   07:12   0:00 sleep 1000
 admin    1688892  0.0  0.0   7076  2176 pts/1    S+   07:12   0:00 grep --color=auto sleep
 ```
@@ -181,7 +181,7 @@ admin    1688892  0.0  0.0   7076  2176 pts/1    S+   07:12   0:00 grep --color=
 ```shell
 docker run  alpine ps aux
 ```
-```shell
+```
 PID   USER     TIME  COMMAND
     1 root      0:00 ps aux
 ```
