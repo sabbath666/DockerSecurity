@@ -74,7 +74,7 @@ lrwxrwxrwx    1 root     root             0 Mar 10 14:20 uts -> uts:[4026533466]
 ```shell
 lsns
 ```
-```shell
+```
         NS TYPE   NPROCS     PID USER  COMMAND
 ------------------------------------------------        
 | 4026531834 time        2 1679752 admin -bash | 
@@ -93,7 +93,7 @@ lsns
 ```shell
 docker run debian lsns
 ```
-```shell
+```
         NS TYPE   NPROCS PID USER COMMAND
 ------------------------------------------------          
 | 4026531834 time        1   1 root lsns       |
