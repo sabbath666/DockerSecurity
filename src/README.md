@@ -18,6 +18,21 @@
 ```shell
  ls -l /proc/$$/ns
 ```
+```
+total 0
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 cgroup -> 'cgroup:[4026531835]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 ipc -> 'ipc:[4026531839]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 mnt -> 'mnt:[4026531841]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 net -> 'net:[4026531840]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid -> 'pid:[4026531836]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid_for_children -> 'pid:[4026531836]'
+--------------------------------------------------------------------------------------
+| lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time -> 'time:[4026531834]'                |
+| lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time_for_children -> 'time:[4026531834]'   |
+| lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 user -> 'user:[4026531837]'                |
+--------------------------------------------------------------------------------------
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 uts -> 'uts:[4026531838]'
+```
 <details>
   <summary>
 объяснение команды
@@ -34,22 +49,7 @@
 
 </details>
 
-```
-total 0
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 cgroup -> 'cgroup:[4026531835]'
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 ipc -> 'ipc:[4026531839]'
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 mnt -> 'mnt:[4026531841]'
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 net -> 'net:[4026531840]'
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid -> 'pid:[4026531836]'
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid_for_children -> 'pid:[4026531836]'
---------------------------------------------------------------------------------------
-| lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time -> 'time:[4026531834]'                |
-| lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time_for_children -> 'time:[4026531834]'   |
-| lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 user -> 'user:[4026531837]'                |
---------------------------------------------------------------------------------------
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 uts -> 'uts:[4026531838]'
-```
-
+Теперь посмотрим неймспейсы в контейнере:
 ```shell
  docker run alpine ls -l /proc/1/ns
 ```
@@ -61,21 +61,29 @@ lrwxrwxrwx    1 root     root             0 Mar 10 14:20 mnt -> mnt:[4026533465]
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 net -> net:[4026533470]
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 pid -> pid:[4026533468]
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 pid_for_children -> pid:[4026533468]
-lrwxrwxrwx    1 root     root             0 Mar 10 14:20 time -> time:[4026531834]❗❗❗
-lrwxrwxrwx    1 root     root             0 Mar 10 14:20 time_for_children -> time:[4026531834]❗❗❗
-lrwxrwxrwx    1 root     root             0 Mar 10 14:20 user -> user:[4026531837] ❗❗❗ - uid процесса на хосте совпадает с uid процесса в контейнере   
+---------------------------------------------------------------------------------------------------
+| lrwxrwxrwx    1 root     root             0 Mar 10 14:20 time -> time:[4026531834]              |
+| lrwxrwxrwx    1 root     root             0 Mar 10 14:20 time_for_children -> time:[4026531834] |
+| lrwxrwxrwx    1 root     root             0 Mar 10 14:20 user -> user:[4026531837]              |
+---------------------------------------------------------------------------------------------------
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 uts -> uts:[4026533466]
 ```
-Или можно было воспользоваться командой lsns:
+Видим, что id неймспейсов user и time на хосте совпадают с id неймспейсов в контейнере.
+
+Кстати, еще можно было воспользоваться командой lsns:
 ```shell
 lsns
 ```
 ```shell
         NS TYPE   NPROCS     PID USER  COMMAND
-4026531834 time        2 1679752 admin -bash
+------------------------------------------------        
+| 4026531834 time        2 1679752 admin -bash | 
+------------------------------------------------
 4026531835 cgroup      2 1679752 admin -bash
 4026531836 pid         2 1679752 admin -bash
-4026531837 user        2 1679752 admin -bash
+-------------------------------------------------  
+| 4026531837 user        2 1679752 admin -bash  |
+-------------------------------------------------  
 4026531838 uts         2 1679752 admin -bash
 4026531839 ipc         2 1679752 admin -bash
 4026531840 net         2 1679752 admin -bash
@@ -87,8 +95,10 @@ docker run debian lsns
 ```
 ```shell
         NS TYPE   NPROCS PID USER COMMAND
-4026531834 time        1   1 root lsns
-4026531837 user        1   1 root lsns
+------------------------------------------------          
+| 4026531834 time        1   1 root lsns       |
+| 4026531837 user        1   1 root lsns       |
+------------------------------------------------  
 4026532582 mnt         1   1 root lsns
 4026532583 uts         1   1 root lsns
 4026532584 ipc         1   1 root lsns
