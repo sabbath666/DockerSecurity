@@ -64,7 +64,36 @@ lrwxrwxrwx    1 root     root             0 Mar 10 14:20 time_for_children -> ti
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 user -> user:[4026531837] ❗❗❗ - uid процесса на хосте совпадает с uid процесса в контейнере   
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 uts -> uts:[4026533466]
 ```
+Или можно было воспользоваться командой lsns:
+```shell
+lsns
+```
+```shell
+        NS TYPE   NPROCS     PID USER  COMMAND
+4026531834 time        2 1679752 admin -bash
+4026531835 cgroup      2 1679752 admin -bash
+4026531836 pid         2 1679752 admin -bash
+4026531837 user        2 1679752 admin -bash
+4026531838 uts         2 1679752 admin -bash
+4026531839 ipc         2 1679752 admin -bash
+4026531840 net         2 1679752 admin -bash
+4026531841 mnt         2 1679752 admin -bash
+```
 
+```shell
+docker run debian lsns
+```
+```shell
+        NS TYPE   NPROCS PID USER COMMAND
+4026531834 time        1   1 root lsns
+4026531837 user        1   1 root lsns
+4026532582 mnt         1   1 root lsns
+4026532583 uts         1   1 root lsns
+4026532584 ipc         1   1 root lsns
+4026532585 pid         1   1 root lsns
+4026532586 cgroup      1   1 root lsns
+4026532587 net         1   1 root lsns
+```
 Очень наглядно видно, что почти все id неймспейсов различаются, а USER - нет, т.к пространство UID хоста шарится с контейнером => root на хосте и root в контейнере один и тот же. Давайте убедимся.
 
 На хосте:
@@ -112,7 +141,7 @@ docker run alpine sh -c "apk add -q libcap && capsh --print|grep 'Bounding set'"
 Bounding set =cap_chown,cap_dac_override,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,
 cap_net_bind_service,cap_net_raw,cap_sys_chroot,cap_mknod,cap_audit_write,cap_setfcap
 ```
-Видим, что root на хосте мощнее. Оказывается Docker при запуске контейнера отобрал часть Capabilities, чтобы сделать процесс в контейнере более безопасным. В этом примере мы видим, что есть нетривиальные вещи о которых по-хорошему нужно знать.
+Видим, что root на хосте мощнее, т.е имеет болбше полномочий. Оказывается Docker при запуске контейнера отобрал часть Capabilities, чтобы сделать процесс в контейнере более безопасным. В этом примере мы видим, что есть нетривиальные вещи о которых по-хорошему нужно знать.
 
 Давайте еще поговорим об изоляции
 ### Пример 2: Видимость процесса в контейнере
@@ -140,6 +169,10 @@ docker run  alpine ps aux
 PID   USER     TIME  COMMAND
     1 root      0:00 ps aux
 ```
+
+## Побеги из контейнеров
+Пример с runc, remapping uid
+
 ## Best Practice
 
 Про docker group и полномочия рута
