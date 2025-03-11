@@ -42,8 +42,8 @@ lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 mnt -> 'mnt:[4026531841]'
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 net -> 'net:[4026531840]'
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid -> 'pid:[4026531836]'
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid_for_children -> 'pid:[4026531836]'
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time -> 'time:[4026531834]'
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time_for_children -> 'time:[4026531834]'
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time -> 'time:[4026531834]' ❶
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time_for_children -> 'time:[4026531834]'❗❗❗
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 user -> 'user:[4026531837]' ❗❗❗
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 uts -> 'uts:[4026531838]'
 ```
@@ -59,8 +59,8 @@ lrwxrwxrwx    1 root     root             0 Mar 10 14:20 mnt -> mnt:[4026533465]
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 net -> net:[4026533470]
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 pid -> pid:[4026533468]
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 pid_for_children -> pid:[4026533468]
-lrwxrwxrwx    1 root     root             0 Mar 10 14:20 time -> time:[4026531834]
-lrwxrwxrwx    1 root     root             0 Mar 10 14:20 time_for_children -> time:[4026531834]
+lrwxrwxrwx    1 root     root             0 Mar 10 14:20 time -> time:[4026531834]❗❗❗
+lrwxrwxrwx    1 root     root             0 Mar 10 14:20 time_for_children -> time:[4026531834]❗❗❗
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 user -> user:[4026531837] ❗❗❗ - uid процесса на хосте совпадает с uid процесса в контейнере   
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 uts -> uts:[4026533466]
 ```
