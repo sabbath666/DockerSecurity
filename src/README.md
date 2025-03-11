@@ -42,7 +42,7 @@ lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 mnt -> 'mnt:[4026531841]'
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 net -> 'net:[4026531840]'
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid -> 'pid:[4026531836]'
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 pid_for_children -> 'pid:[4026531836]'
-lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time -> 'time:[4026531834]' ❶
+lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time -> 'time:[4026531834]' ❶ 1️⃣
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 time_for_children -> 'time:[4026531834]'❗❗❗
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 user -> 'user:[4026531837]' ❗❗❗
 lrwxrwxrwx 1 admin admin 0 Mar 10 13:19 uts -> 'uts:[4026531838]'
