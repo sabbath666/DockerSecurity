@@ -65,34 +65,58 @@ lrwxrwxrwx    1 root     root             0 Mar 10 14:20 user -> user:[402653183
 lrwxrwxrwx    1 root     root             0 Mar 10 14:20 uts -> uts:[4026533466]
 ```
 
-<figure><img src="/resources/01-host_namespaces.png" alt=""><figcaption></figcaption></figure>
+Очень наглядно видно, что почти все id неймспейсов различаются, а USER - нет, т.к пространство UID хоста шарится с контейнером => root на хосте и root в контейнере один и тот же. Давайте убедимся.
 
-Очень наглядно видно, что почти все id неймспейсов различаются, а USER - нет, т.к пространство UID хоста шарится с контейнером => root на хосте и root в контейнере один и тот же. Давайте убедимся:
+На хосте:
+```shell
+sudo su 
+id
+```
+```shell
+uid=0(root) gid=0(root) groups=0(root)
+```
 
-<figure><img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXf_gV-CDu8kNODAodOhedb1IPVFOOq1rMemGELUYR7xyuPofGzwOygm5NGbrx_XgI49_cI2PyE89lkJXrSGnFZe_4VDpNSdfmGX_ZAnezdo-xgIqHFjEdSr3Mg-ueV8JrGf0ryY?key=o4n_CvAEFOAedWxOCWnj3EN0" alt=""><figcaption></figcaption></figure>
+В контейнере:
+```shell
+docker run alpine id
+```
+```shell
+uid=0(root) gid=0(root) groups=0(root),...
+```
+Но точно ли руты они одинаковы или какой-то root мощнее? Сравним capabilities. Если нет утилиты capsh, то необходимо установить пакет libcap2-bin:
 
-Но точно ли они одинаковы или какой-то root мощнее? Сравним capabilities. Если нет утилиты capsh, то необходимо установить пакет libcap2-bin:
-
-<figure><img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXfw26UsX1ml0QyaXtqc4bAQlUmxeURGAp4AO5ct1aOK9xRjRqnsWktQJMo1PfXWajARgYsA1DfImc-zaRCTsd2Z2aEgM6EubnJk3-unQ57tK-081nm77sIkFn1SG5Ki2BxtLWse?key=o4n_CvAEFOAedWxOCWnj3EN0" alt=""><figcaption></figcaption></figure>
-
+```shell
+sudo apt-get install libcap2-bin
+```
 Итак сравним capabilities.
 
 На хосте:
-
-<figure><img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXe8ftRKuShdPgdTK79wfnz4HwLvs9996qdRQ1V9qJOt0laIb6b2yNFmT3NBG1P88TG2CPaZHhA46IRgb0oymzRJwnE4tYwLpRI5AEdCPM6vI5DPU_34zZ6pQVMugNUSN5MVCKYlCQ?key=o4n_CvAEFOAedWxOCWnj3EN0" alt=""><figcaption></figcaption></figure>
+```shell
+capsh --print|grep 'Bounding set'
+```
+```shell
+Bounding set =cap_chown,cap_dac_override,cap_dac_read_search,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,
+cap_setpcap,cap_linux_immutable,cap_net_bind_service,cap_net_broadcast,cap_net_admin,cap_net_raw,cap_ipc_lock,
+cap_ipc_owner,cap_sys_module,cap_sys_rawio,cap_sys_chroot,cap_sys_ptrace,cap_sys_pacct,cap_sys_admin,cap_sys_boot,
+cap_sys_nice,cap_sys_resource,cap_sys_time,cap_sys_tty_config,cap_mknod,cap_lease,cap_audit_write,cap_audit_control,
+cap_setfcap,cap_mac_override,cap_mac_admin,cap_syslog,cap_wake_alarm,cap_block_suspend,cap_audit_read,cap_perfmon,
+cap_bpf,cap_checkpoint_restore
+```
 
 В контейнере:
 
-<figure><img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXfhxXyUeKi1hV_wQ3Zq6q5c9YasACbd47VBnPhU0xvz7tX44bL1AQHT1E68gV3FmEvAN6arXmCd1orHvNYoOSDWX4Sl5YOTG7t0v-s90vHcDxoW2hMxULKO0NS4HqvznFkiM2t9AQ?key=o4n_CvAEFOAedWxOCWnj3EN0" alt=""><figcaption></figcaption></figure>
-
+```shell
+docker run alpine sh -c "apk add -q libcap && capsh --print|grep 'Bounding set'"
+```
+```shell
+Bounding set =cap_chown,cap_dac_override,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,
+cap_net_bind_service,cap_net_raw,cap_sys_chroot,cap_mknod,cap_audit_write,cap_setfcap
+```
 Видим, что root на хосте мощнее. Оказывается Docker при запуске контейнера отобрал часть Capabilities, чтобы сделать процесс в контейнере более безопасным. В этом примере мы видим, что есть нетривиальные вещи о которых по-хорошему нужно знать.
 
-\
 TODO Пример с видимостью процесса в контейнере с хоста\\
 
-<figure><img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXet7NVtpZLmmuohuy_Acq32Sr-3UobvxhGm3a8ZhD-VecFt8Daiwo57krZoywHHIxdla5QF5VOvAWje_BaCUNXMPpD3Q850jE60HQnwUWBXwyWkADKgzri3j5uLoSyvHud4ccVvgA?key=o4n_CvAEFOAedWxOCWnj3EN0" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXdQHoraZD6ush9Cs9uz0FHv2UUcXmpHUdfT1jOYSkKnplvU2yMEbBmsomdwOE5hFYnjm8A-U6-IaCr_QIH0guBhlXDBFiUvkRzyDjCTRahOuee0IuTYtPYUNJDQMtoQdG0nVTomDg?key=o4n_CvAEFOAedWxOCWnj3EN0" alt=""><figcaption></figcaption></figure>
 
 ## Best Practice
 
