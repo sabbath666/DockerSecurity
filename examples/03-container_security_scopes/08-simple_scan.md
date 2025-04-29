@@ -1,0 +1,3 @@
+trivy
+clamav
+shellcheck

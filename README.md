@@ -338,6 +338,23 @@ cli-docker -> docker.sock -> docker daemon -> containerd -> runc -> контей
 
 Что ж, давайте создадим пользователя и повысим его привилегии с помощью Docker.
 
+1. Создадим пользователя и добавим его в группу Docker:
+
+```shell
+sudo adduser myuser && sudo usermod -aG docker myuser
+```
+
+2. Теперь переключимся на пользователя myuser:
+```shell
+sudo su myuser
+```
+3. Запустим alpine контейнер и добавим пользователя myuser в sudoers:
+```shell
+docker run -it --rm alpine
+e 
+```
+
+
 //TODO: Пример с runc, remapping uid
 
 ## Best Practice
