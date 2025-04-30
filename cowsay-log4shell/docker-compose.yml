@@ -1,0 +1,10 @@
+services:
+  log4shell:
+    image: "hexacosidedroid/log4shell-example:1"
+    ports:
+      - "8080:8080"
+
+  marshalsec:
+    image: "hexacosidedroid/marshalsec:1"
+    ports:
+      - "1389:1389"
