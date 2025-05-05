@@ -1,0 +1,4 @@
+FROM ubuntu
+
+# попробовать 7, 8 или 9
+WORKDIR /proc/self/fd/7/
