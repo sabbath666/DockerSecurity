@@ -1,4 +1,4 @@
-package ru.cib.log4shellrce
+package ru.cib.log4shell
 
 import com.github.ricksbrown.cowsay.plugin.CowExecutor
 import org.springframework.web.bind.annotation.GetMapping

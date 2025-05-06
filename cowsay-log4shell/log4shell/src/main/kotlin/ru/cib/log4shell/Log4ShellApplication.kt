@@ -1,4 +1,4 @@
-package ru.cib.log4shellrce
+package ru.cib.log4shell
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
