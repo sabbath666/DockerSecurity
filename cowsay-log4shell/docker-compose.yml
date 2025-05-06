@@ -8,3 +8,8 @@ services:
     image: "hexacosidedroid/marshalsec:1"
     ports:
       - "1389:1389"
+
+  exploit_server:
+    image: "hexacosidedroid/log4shell-exploit-server:1"
+    ports:
+      - "8000:8000"
