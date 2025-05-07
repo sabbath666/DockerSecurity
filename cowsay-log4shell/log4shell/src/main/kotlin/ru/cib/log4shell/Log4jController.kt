@@ -66,7 +66,7 @@ class Log4jController {
     fun setMonster(@RequestBody request: MonsterRequest,
                    @RequestHeader("X-Api-Version") apiVersion: String
     ): String {
-        logger.info(apiVersion)
+        logger.info(apiVersion) // JNDI injection
         monster.set(request.name)
         return cowsay("Монстр установлен на '${request.name}'", monster.get())
     }
