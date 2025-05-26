@@ -8,11 +8,11 @@
         <version>2.4.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>ru.cib</groupId>
-    <artifactId>log4shell-rce</artifactId>
+    <groupId>org.example</groupId>
+    <artifactId>log4shell</artifactId>
     <version>0.0.1</version>
     <name>log4shell-rce</name>
-    <description>log4shell-rce</description>
+    <description>log4shell</description>
     <url/>
     <licenses>
         <license/>
