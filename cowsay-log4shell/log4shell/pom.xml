@@ -11,7 +11,7 @@
     <groupId>org.example</groupId>
     <artifactId>log4shell</artifactId>
     <version>0.0.1</version>
-    <name>log4shell-rce</name>
+    <name>log4shell</name>
     <description>log4shell</description>
     <url/>
     <licenses>
