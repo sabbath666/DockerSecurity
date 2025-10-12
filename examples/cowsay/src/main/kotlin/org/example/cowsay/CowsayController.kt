@@ -9,9 +9,11 @@ import java.net.InetAddress
 import java.util.concurrent.atomic.AtomicReference
 
 @RestController
-class CowsayController {
+class CowsayController(
+    private val greetingRepository: GreetingRepository
+) {
 
-    private val greetings = listOf("Ну привет", "Чокак?", "Хэй", "Пуньк-пунь")
+    private val fallbackGreetings = listOf("Ну привет", "Чокак?", "Хэй", "Пуньк-пунь")
     private val monster = AtomicReference("default")
     private val cowSayExecutor = CowExecutor().apply {
         setHtml(true)
@@ -19,7 +21,11 @@ class CowsayController {
 
     @GetMapping("/hello")
     fun hello(): String {
-        val greeting = greetings.random()
+        val greeting = try {
+            greetingRepository.findRandom()?.text
+        } catch (e: Exception) {
+            null
+        } ?: fallbackGreetings.random()
         return cowsay(greeting, monster.get())
     }
 
