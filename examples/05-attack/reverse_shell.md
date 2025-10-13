@@ -6,7 +6,7 @@ docker build -t cowsay:0.0.1 .
 ```
 
 ```shell
-curl 2ip.ru
+curl 2ip.org
 curl -X GET http://127.0.0.1:2375/containers/json?all=true
 ```
 
