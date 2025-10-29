@@ -1,4 +1,4 @@
-FROM centralx/maven:3.9.9-jdk17-ubuntu
+FROM sabbath/maven:3.9.9-jdk17-ubuntu
 
 LABEL maintainer="alex@somecompany.com"
 LABEL ci.pipeline.url="https://gitlab.example.com/project/-/pipelines/314"
