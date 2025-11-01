@@ -1,5 +1,16 @@
 INSERT INTO greetings (text) VALUES
-  ('Ну привет'),
-  ('Чокак?'),
-  ('Хэй'),
-  ('Пуньк-пунь');
+                                 ('In DevSecOps we trust, but verify with Trivy.'),
+                                 ('My Dockerfile works on my machine — and nowhere else.'),
+                                 ('Security is just DevOps on hard mode.'),
+                                 ('Containers don’t fix bad code. They just ship it faster.'),
+                                 ('Every time you run privileged mode, a security engineer cries.'),
+                                 ('Keep calm and rebuild your image.'),
+                                 ('DevSecOps: because "Oops" is not a security strategy.'),
+                                 ('Love your pipelines, but never trust your inputs.'),
+                                 ('If it works in production, it’s already legacy.'),
+                                 ('Behind every secure cluster is a paranoid engineer.'),
+                                 ('Rootless today, sleepless tonight.'),
+                                 ('Docker run, Docker fun, until someone mounts /.'),
+                                 ('Push images, not vulnerabilities.'),
+                                 ('Real heroes check logs before panic.'),
+                                 ('Eat, sleep, deploy, patch, repeat.');
