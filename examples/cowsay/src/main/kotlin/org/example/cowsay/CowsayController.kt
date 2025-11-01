@@ -79,6 +79,7 @@ class CowsayController(
     private fun cowsay(message: String, cowfile: String): String {
         cowSayExecutor.setMessage(message)
         cowSayExecutor.setCowfile(cowfile)
+        cowSayExecutor.setHtml(true)
         return cowSayExecutor.execute()
     }
     private fun getIpAddress(): String {
