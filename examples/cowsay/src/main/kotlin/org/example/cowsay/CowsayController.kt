@@ -13,7 +13,7 @@ class CowsayController(
     private val greetingRepository: GreetingRepository
 ) {
 
-    private val fallbackGreetings = listOf("Ну привет", "Чокак?", "Хэй", "Пуньк-пунь")
+    private val fallbackGreetings = listOf("Hi there", "Hello, DevSecOooops?", "Hey", "Howdy","Mooooo")
     private val monster = AtomicReference("default")
     private val cowSayExecutor = CowExecutor().apply {
         setHtml(true)
