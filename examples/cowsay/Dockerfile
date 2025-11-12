@@ -11,7 +11,7 @@ ARG BUILD_SECRET=CHANGE_ME_SECRET
 ENV APP_BUILD_SECRET=${BUILD_SECRET}
 
 RUN apt-get update && \
-    apt-get install -y curl wget git vim && \
+    apt-get install -y curl wget git vim procps && \
     mvn -B clean package -DskipTests && \
     mkdir -p /build/logs && mvn -B -DskipTests package > /build/logs/build-output.log 2>&1
 
