@@ -38,8 +38,8 @@ nc -lvnp 8484
 ```
 
 ```shell
-docker pull
-docker run
+   docker pull
+   docker run
 ```
 
 
