@@ -27,5 +27,3 @@ docker run -d forkbomb
 docker stats
 ```
 
-Home:
- stress, apachebench
