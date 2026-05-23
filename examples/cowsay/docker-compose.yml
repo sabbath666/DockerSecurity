@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:16
+    container_name: cowsay-postgres
+    environment:
+      POSTGRES_DB: cowsay
+      POSTGRES_USER: cowsay
+      POSTGRES_PASSWORD: supersecret
+    ports:
+      - "5432:5432"
+    volumes:
+      - cowsay-pgdata:/var/lib/postgresql/data
+  app:
+    build:
+      context: .
+    image: cowsay-app:latest
+    container_name: cowsay-app
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      # These are optional since application.properties already contains them,
+      # but they allow easy override via compose
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cowsay
+      SPRING_DATASOURCE_USERNAME: cowsay
+      SPRING_DATASOURCE_PASSWORD: supersecret
+volumes:
+  cowsay-pgdata:

@@ -5,7 +5,8 @@
 ```
 # 2 Containerized Fork Bomb
 
-forkbomb.sh
+`forkbomb.sh`
+
 ```shell
 #!/bin/bash
 echo "start fork bomb"
@@ -20,3 +21,11 @@ RUN chmod +x /forkbomb.sh
 ENTRYPOINT ["/forkbomb.sh"]
 ```
 
+```shell
+docker build -t forkbomb .
+docker run -d forkbomb
+docker stats
+```
+
+Home:
+ stress, apachebench
